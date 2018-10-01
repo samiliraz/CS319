@@ -3,15 +3,10 @@
 Walls and Warriors Game Project - CS319
 
 Group Members
-
 Şamil İraz
-
 Ateş Bilgin
-
 Enes Emre Erdem
-
 Gülnihal Muslu
-
 Can Ozan Kaş
 
 Description
