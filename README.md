@@ -4,17 +4,16 @@ Course Project Readme File
 
 <Group Members>
 
-Şamil İraz
+Şamil İraz \n
 
-Ateş Bilgin
+Ateş Bilgin \n
 
-Enes Emre Erdem
+Enes Emre Erdem \n
 
-Gülnihal Muslu
+Gülnihal Muslu \n
 
-Can Ozan Kaş
+Can Ozan Kaş \n
 
-Description
 This is a brief description of our game Walls & Warriors built upon the vanilla board game. Basically the differences between our version and the vanilla version are listed below. 
 
 Firstly, we plan to define different solutions for each challenge. Every challenge has some (maybe only one) good and some (maybe only one) bad solutions. When we say bad, we do not mean that it is not a solution. It is indeed a solution as well, but under certain circumstances, other solutions might be considered as “better”. Easy as it looks.
