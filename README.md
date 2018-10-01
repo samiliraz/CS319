@@ -1,12 +1,19 @@
 # CS319
 
 Walls and Warriors Game Project - CS319
+
 Group Members
+
 Şamil İraz
+
 Ateş Bilgin
+
 Enes Emre Erdem
+
 Gülnihal Muslu
+
 Can Ozan Kaş
+
 Description
 This is a brief description of our game Walls & Warriors built upon the vanilla board game. Basically the differences between our version and the vanilla version are listed below. 
 
