@@ -1,5 +1,5 @@
-# CS319 Course Project Readme File
-
+# CS319
+Course Project Readme File
 # Walls and Warriors Game Project - CS319
 
 <Group Members>
