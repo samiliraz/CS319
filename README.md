@@ -4,10 +4,15 @@
 <Group Members>
 
 *Şamil İraz*
+
 *Ateş Bilgin*
+
 *Enes Emre Erdem*
+
 *Gülnihal Muslu*
+
 *Can Ozan Kaş*
+
 
 This is a brief description of our game Walls & Warriors built upon the vanilla board game. Basically the differences between our version and the vanilla version are listed below. 
 
