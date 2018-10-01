@@ -1,8 +1,8 @@
-# CS319
+# CS319 Course Project Readme File
 
-Walls and Warriors Game Project - CS319
+# Walls and Warriors Game Project - CS319
 
-Group Members
+<Group Members>
 
 Şamil İraz
 
