@@ -1,23 +1,23 @@
 
-## Walls and Warriors Game Project - CS319 Readme
+# Walls and Warriors Game Project - CS319 Readme
 
-Group Name : ProCODERS
+### Group Name : ProCODERS
    
-Group Number: 2E
+### Group Number: 2E
  
-Project Name : Lords in Halls
+### Project Name : Lords in Halls
   
 ### Group Members
 
-*Şamil İraz*
+##### *Şamil İraz*
 
-*Ateş Bilgin*
+##### *Ateş Bilgin*
 
-*Enes Emre Erdem*
+##### *Enes Emre Erdem*
 
-*Gülnihal Muslu*
+##### *Gülnihal Muslu*
 
-*Can Ozan Kaş*
+##### *Can Ozan Kaş*
 
 Project Topic:  Walls and Warriors Game
 This is a brief description of Walls & Warriors game. Original Walls & Warriors is a brain-testing board game, which includes a game board, 5 puzzle pieces, 7 warriors and a level booklet. Players start the game with placing the Warriors into the specified points on the level map. After that, players need to place the walls on the game board. Walls must be placed on the game board in such a way that, they will cover all the blue warriors inside the walls and leave the red Warriors out of the walls.
