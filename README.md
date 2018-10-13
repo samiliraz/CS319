@@ -2,11 +2,13 @@
 ## Walls and Warriors Game Project - CS319 Readme
 
 
-<Project Name>
+<Group Name>
   ProCODERS
-  
+   
 Group Number: 2E
-  
+ 
+<Project Name>
+  Lords in Halls
   
 <Group Members>
 
@@ -21,9 +23,9 @@ Group Number: 2E
 *Can Ozan Kaş*
 
 Project Topic:  Walls and Warriors Game
-This is a brief description of Walls & Warriors game. Original Walls & Warriors is a brain-testing board game, which consist of game board, 5 puzzle pieces, 7 warriors and level booklet. Player starts game with placing the Warriors into the specified points on the level map. After that, player needs to place the walls on the game board. Walls must be placed on the game board such a way that, they will cover all the blue warriors inside the walls and leave the red Warriors out of the walls.
+This is a brief description of Walls & Warriors game. Original Walls & Warriors is a brain-testing board game, which includes a game board, 5 puzzle pieces, 7 warriors and a level booklet. Players start the game with placing the Warriors into the specified points on the level map. After that, players need to place the walls on the game board. Walls must be placed on the game board in such a way that, they will cover all the blue warriors inside the walls and leave the red Warriors out of the walls.
 
-This is a brief description of our game Walls & Warriors built upon the vanilla board game. Basically the differences between our version and the vanilla version are listed below. 
+Description below is a brief explanation of our game Walls & Warriors built upon the vanilla board game. Basically the differences between our version and the vanilla version are listed below. 
 
 Firstly, we plan to define different solutions for each challenge. Every challenge has some (maybe only one) good and some (maybe only one) bad solutions. When we say bad, we do not mean that it is not a solution. It is indeed a solution as well, but under certain circumstances, other solutions might be considered as “better”. Easy as it looks.
 
