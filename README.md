@@ -1,14 +1,11 @@
 
 ## Walls and Warriors Game Project - CS319 Readme
 
-
-<Group Name>
-  ProCODERS
+Group Name : ProCODERS
    
 Group Number: 2E
  
-<Project Name>
-  Lords in Halls
+Project Name : Lords in Halls
   
 <Group Members>
 
