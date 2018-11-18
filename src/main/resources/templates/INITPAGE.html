@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title> Init Page </title>
+	<style>
+		h1
+		{
+			color:#E8714A;
+			font-weight:500;
+			font-family:Papyrus;
+			font-size:65px;
+
+			/* background-color:yellow;*/
+
+			position: static;
+			bottom: 300;
+			right: 300;
+
+
+			padding-top:150px;
+
+			text-align: center;
+
+		}
+		body
+		{
+			background-image: url("mainBackground.jpg");
+			background-color: #cccccc;
+		}
+
+		p1
+		{
+			color:white;
+			font-family:Verdana, Geneva, sans-serif;
+			font-size:24px;
+			text-align: center;
+			font-family:Papyrus;
+
+		}
+
+		.grid-buttonContainer{
+			display: grid;
+			grid-template-column: auto auto auto;
+			/*padding: 40px;*/
+
+
+			/*
+            border-style:ridge;
+            border-width:3px;
+            border-color:red;
+            */
+
+			position: absolute;
+			top: 45%;
+			left: 45%;
+
+
+		}
+
+		.button{
+
+			background-color: #A65959; /* Green */
+			display:button;
+			type = "button";
+			/*color:blue;*/
+			border-color:black;
+			border-style:groove;
+			margin-bottom:20px;
+			cursor: pointer;
+		}
+
+		.loginButton{
+
+			background-color: #cccccc;
+			background-image: url("download.jpg");
+			text-align: center;
+			width:200px;
+			height:120px;
+			margin-bottom:20px;
+
+
+		}
+		.signUpButton{
+
+			background-color: #cccccc;
+			background-image: url("download.jpg");
+			text-align: center;
+			width:200px;
+			height:120px;
+
+		}
+		.knightRed{
+			display:block;
+			margin-right:30px;
+
+			position: absolute;
+			left: 10%;
+			top:30%;
+		}
+		.knightBlue{
+			display:block;
+			margin-right:30px;
+			position: absolute;
+			right: 10%;
+			top:30%;
+
+
+		}
+
+
+	</style>
+</head>
+<body>
+
+<button class = "button"> <p1>EXİT</p1> </button>
+<h1>LORDS IN HALLS </h1>
+
+<div class = "grid-buttonContainer">
+
+	<button class = "button signUpButton" onclick="location.href = 'SIGNUPPAGE'">  <p1>Sign Up </p1> </button>
+
+	<button class = "button loginButton"  onclick="location.href = 'LOGIN'"> <p1>Log in </p1> </button>
+
+
+</div>
+
+
+</body>
+</html>

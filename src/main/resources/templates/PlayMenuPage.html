@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+
+
+
+<html>
+<head>
+	<title> Play Menu Page </title>
+	<style>
+	
+	h1{
+		padding: 10px;
+		text-align: center;
+		color:#9C1E1E;
+		font-size:70px;
+		margin-left:170px;
+		margin-right:170px;
+		font-family:Papyrus;
+	}
+	
+	p1{
+		color:#FF6400;
+		font-family:Comic Sans MS;
+		font-size:24px;
+		text-align: center;	
+		font-weight: bold;
+
+	}
+
+
+.grid-buttonContainer{ 
+	display: grid;
+	grid-template-column: auto auto auto;
+				
+	position: absolute;
+	top: 35%;
+	left: 39%;
+				
+				
+}
+
+body {
+	background-image: url("medievalBack.jpg");
+	background-color: #cccccc;
+}
+
+.exitButton{
+
+				background-color: #4CAF50; /* Green */
+				display:button;
+				type = "button";
+				/*color:blue;*/
+				border-color:black;
+				border-style:groove;
+				margin-bottom:20px;
+				cursor: pointer;
+			
+}
+.arcadeButton{
+			
+			background-color: Transparent;
+			text-align: center;
+			width:370px;
+			height:80px;
+			margin:20px;
+			cursor: pointer;
+			
+			
+}
+
+.timeChallengeButton{
+			
+			background-color: Transparent;
+			text-align: center;
+			width:370px;
+			height:80px;
+			margin:20px;
+			cursor: pointer;
+}
+
+.arcadeWithWhiteKnightButton{
+			
+			background-color: Transparent;
+			text-align: center;
+			width:370px;
+			height:80px;
+			margin:20px;
+			cursor: pointer;			
+}
+
+.timeChallengeWithWhiteKnightButton{
+			
+			background-color: Transparent;
+			text-align: center;
+			width:370px;
+			height:80px;
+			margin:20px;	
+			cursor: pointer;
+}
+
+
+
+	</style>
+	</head>
+	
+	<body>
+	
+	<button class = "button exitButton" onclick="location.href = 'MAINMENU'"> <p1>Back</p1> </button>
+	
+	<h1> Play </h1>
+	<div class = "grid-buttonContainer">
+		<div style="width: 100%; overflow: hidden;">
+		
+		<div style="width: 600px; float: left;"> 
+		
+			<button class = "button arcadeButton" onclick="location.href = 'GAMEPLAY'"> <p1>Arcade </p1> </button>
+				
+			<button class = "button timeChallengeButton"> <p1>Time Challenge </p1> </button>
+			
+			<button class = "button arcadeWithWhiteKnightButton"> <p1>Arcade with White Knight </p1> </button>
+			
+			<button class = "button timeChallengeWithWhiteKnightButton"> <p1>Time Challenge with White Knight </p1> </button>
+			
+		</div>
+		
+		<div style="margin-left: 600px;">
+		<br/>
+			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
+			
+			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/><br/>
+			
+			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
+			
+			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
+		
+		</div>
+		
+		
+	
+	</body>
+</html>

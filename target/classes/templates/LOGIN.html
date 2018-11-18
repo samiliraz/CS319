@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+
+
+
+<html>
+<head>
+	<title> Login Page </title>
+	<style>
+	h1
+	{
+		color:orange;
+		font-weight:500;
+		font-family:Papyrus;
+		font-size:65px;
+		/* background-color:yellow;*/
+		position: static;
+		bottom: 300;
+		right: 300;
+		padding-top:150px;
+		text-align: center;
+	}
+	
+	body 
+			{
+				background-image: url("mainBackground.jpg");
+				background-color: #cccccc;
+			}
+.button{
+
+		background-color: #A65959; 
+		display:button;
+		type = "button";
+		border-color:black;
+		border-style:groove;
+		margin-bottom:20px;
+		cursor: pointer;
+		background-color: #cccccc; 
+		background-image: url("download.jpg");
+}
+	
+	
+	
+	p1
+			{
+				color:white;
+				font-family:Verdana, Geneva, sans-serif;
+				font-size:24px;
+				text-align: center;
+				font-family:Papyrus;
+				
+			}
+	p2
+	{
+		color:orange;
+		font-family:Papyrus;
+		font-size:24px;
+		text-align: center;	
+	}
+	.grid-container
+	{
+		display: grid;
+		grid-template-column: auto auto auto;
+		position: absolute;
+		top: 40%;
+		left: 40%;
+}
+	</style>
+	</head>
+	
+	<body>
+		<button class = "button" onclick="location.href = 'INITPAGE'"> <p1> Back </p1> </button>
+		
+		<h1>LOG IN </h1>
+		<div class = "grid-container">
+			<form action = "/submit_login" method = "post">
+
+					<p2> Username: </p2> <input type = "text" name = "Username" required /><br/>
+					<p2>  </p2><br/>
+					
+					<p2>  Password: </p2> <input type = "password" name = "Password" required /><br/>
+					
+					<p2>  </p2><br/>
+					<button class = "button"> <p1> Log In </p1> </button>
+
+				</table>
+			</form>
+		</div>
+		
+	
+	</body>
+</html>

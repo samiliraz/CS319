@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+
+
+
+<html>
+<head>
+	<title> Signup Page </title>
+	<style>
+	h1
+	{
+		color:orange;
+		font-weight:500;
+		font-family:Papyrus;
+		font-size:65px;
+		/* background-color:yellow;*/
+		position: static;
+		bottom: 300;
+		right: 300;
+		padding-top:150px;
+		text-align: center;
+	}
+	.button
+	{
+		background-color: #cccccc; 
+		background-image: url("download.jpg");
+		display:button;
+		type = "button";
+		/*color:blue;*/
+		border-color:black;
+		border-style:groove;
+		margin-bottom:20px;
+		cursor: pointer;
+	}
+	body 
+	{
+		background-image: url("mainBackground.jpg");
+		background-color: #cccccc;
+	}
+	
+	
+	p1
+	{
+		color:white;
+		font-family:Papyrus;
+		font-size:24px;
+		text-align: center;
+		background-color: #cccccc; 
+		background-image: url("download.jpg");
+	}
+	p2
+	{
+		color:orange;
+		font-family:Papyrus;
+		font-size:24px;
+		text-align: center;	
+	}
+	.grid-container
+	{
+		display: grid;
+		grid-template-column: auto auto auto;
+		position: absolute;
+		top: 40%;
+		left: 40%;
+}
+	</style>
+	</head>
+	
+	<body>
+		<button class = "button"  onclick="location.href = 'INITPAGE'"> <p1> Back </p1> </button>
+		
+		<h1>SIGN  UP</h1>
+		<div class = "grid-container">
+			<form action = "/submit_signup" method = "post">
+ 
+					<p2> Username: </p2> <input type = "text" name = "username" required /><br/>
+					<p2>  </p2><br/>
+					<p2>  Password: </p2> <input type = "password" name = "password" required /><br/>
+					<p2>  </p2><br/>
+					<p2>  Password: </p2> <input type = "password" name = "password2" required /><br/>
+					<p2>  </p2><br/>
+					<button class = "button SignButton"> <p1> Sign Up </p1> </button>
+
+				</table>
+			</form>
+		</div>
+		
+	
+	</body>
+</html>
