@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<!--<script type="text/javascript" src="C:\Users\Enes Emre Erdem\Desktop\CS319Project\LordsInHalls\src\main\java\com\cs319_termproject\LordsInHalls\Html\jquery.rotate.1-1.js"></script>-->
+	<title> Game Page </title>
+	<style>
+
+		h1{
+			border-color:black;
+			text-align: center;
+			color:#E8714A;
+			font-size:70px;
+			margin-left:170px;
+			margin-right:170px;
+			font-family:Papyrus;
+		}
+
+		body
+		{
+			/*background-image: url("grassBack.jpg");*/
+			background-color: #cccccc;
+		}
+		.buttoBack{
+			background-color: #A65959;
+			/*color:blue;*/
+			border-color:black;
+			border-style:groove;
+
+			cursor: pointer;
+		}
+		.button{
+			margin-left:30px;
+			background-color: #A65959;
+			type : "button";
+			/*color:blue;*/
+			border-color:black;
+			border-style:groove;
+
+			cursor: pointer;
+		}
+		p1
+		{
+			color:white;
+			font-family:Verdana, Geneva, sans-serif;
+			font-size:16px;
+			text-align: center;
+			font-family:Papyrus;
+
+		}
+
+		p2
+		{
+			color:white;
+			font-family:Verdana, Geneva, sans-serif;
+			font-size:25px;
+			text-align: center;
+			font-family:Papyrus;
+
+		}
+
+		#rotating-item-wrapper {
+			position: relative;
+			width: 980px;
+			height: 347px;
+		}
+		.rotating-item {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		#block_container {
+			display: flex;
+		}
+		#map {
+			padding: 0px 75px;
+		}
+		#walls {
+			padding: 0px 0px;
+		}
+
+		.rotate90 {
+			-webkit-transform: rotate(90deg);
+			-moz-transform: rotate(90deg);
+			-o-transform: rotate(90deg);
+			-ms-transform: rotate(90deg);
+			transform: rotate(90deg);
+		}
+		.demo-image{
+			padding:20px 100px;
+			width: 280px;
+			height: 280px;
+			transform: rotate(0deg);
+		}
+
+		table {
+			/*padding: 50px 50px;*/
+			border-collapse: collapse;
+		}
+
+		td {
+			border: 5px solid #0800ff;
+			width: 130px;
+			height: 85px;
+		}
+
+
+	</style>
+	<script type>
+        var globalData;
+        $(function() {
+
+            $.ajax({
+                url: "data",
+                // data:{ "id" : 15 }
+            }).done(function( data ) {
+                console.log( "Sample of data:", data );
+                globalData = data;
+            });
+
+
+            $(".demo-image").click(function() {
+
+                var transform = $( this ).get(0).transform;
+
+                if(!transform)
+                    transform = 0;
+
+                transform +=90;
+
+                $( this ).get(0).transform = transform;
+                $( this ).css("transform", "rotate("+transform+"deg)");
+
+            })
+
+            $(document).ready(function() {
+                var newHtml = "";
+                console.log( "+++>>>" +  globalData );
+            });
+        });
+
+
+	</script>
+
+</head>
+<body>
+
+
+<button class = "button buttoBack" onclick="location.href = 'MAINMENU'"> <p1>MAIN MENU</p1> </button>
+
+<h1> Arcade with White Knight</h1>
+
+<div id="block_container">
+	<div id="map">
+
+		<table>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+
+		</table>
+
+
+	</div>
+	<div id="walls">
+
+		<img src="redKnight.jpg" class="demo-image" />
+	</div>
+</div>
+
+<p2> Challenge 3 </p2>
+</body>
+</html>

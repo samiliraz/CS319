@@ -5,6 +5,7 @@
 
 <html>
 <head>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
 	<title> Play Menu Page </title>
 	<style>
 	
@@ -101,10 +102,22 @@ body {
 
 
 	</style>
+	<script>
+        $(function () {
+            $("#howto").on('click', '.howtoplay', function () {
+                window.alert("You need to place the walls in such a way that, all blue knights should be inside the walls while all the red knights should be outside.\n" +
+                    "You can get extra points if you also wall-in the white knights. You should solve the challenge within a given time if there is a time limitation.\n\n" +
+                    "Place the walls by rotating them and providing coordinates.");
+            })
+        });
+	</script>
+
 	</head>
-	
+
+
 	<body>
-	
+
+
 	<button class = "button exitButton" onclick="location.href = 'MAINMENU'"> <p1>Back</p1> </button>
 	
 	<h1> Play </h1>
@@ -113,25 +126,19 @@ body {
 		
 		<div style="width: 600px; float: left;"> 
 		
-			<button class = "button arcadeButton" onclick="location.href = 'GAMEPLAY'"> <p1>Arcade </p1> </button>
+			<button class = "button arcadeButton" onclick="location.href = 'Arcade'"> <p1>Arcade </p1> </button>
 				
-			<button class = "button timeChallengeButton"> <p1>Time Challenge </p1> </button>
+			<button class = "button timeChallengeButton" onclick="location.href = 'ArcadeTime'"> <p1>Time Challenge </p1> </button>
 			
-			<button class = "button arcadeWithWhiteKnightButton"> <p1>Arcade with White Knight </p1> </button>
+			<button class = "button arcadeWithWhiteKnightButton" onclick="location.href = 'WhiteArcade'"> <p1>Arcade with White Knight </p1> </button>
 			
-			<button class = "button timeChallengeWithWhiteKnightButton"> <p1>Time Challenge with White Knight </p1> </button>
+			<button class = "button timeChallengeWithWhiteKnightButton" onclick="location.href = 'WhiteArcadeTime'"> <p1>Time Challenge with White Knight </p1> </button>
 			
 		</div>
 		
-		<div style="margin-left: 600px;">
+		<div  id="howto" style="margin-left: 600px;">
 		<br/>
-			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
-			
-			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/><br/>
-			
-			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
-			
-			<img src = "qMark.png" alt = "RED" width = "60" height = "60" class = "knightRed"><br/><br/><br/><br/>
+			<button style="position: absolute; right: -400px; top: -300px;" width = "500" height = "500" class = "howtoplay"> <p1>How To Play </p1> </button>
 		
 		</div>
 		

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html xmlns:width="http://www.w3.org/1999/xhtml">
+
+<head>
+
+
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <title> Game Page </title>
+    <style>
+
+        h2{
+            border-color:black;
+            text-align: left;
+            color:#000000;
+            padding: 0px 450px;
+            font-size:50px;
+            margin-left:230px;
+            margin-right:130px;
+            font-family:Papyrus;
+        }
+
+        h3{
+            border-color:black;
+            color:#E8714A;
+            font-size:30px;
+            font-family:Papyrus;
+        }
+        h4{
+            border-color:black;
+            color: #0800ff;
+            font-size:30px;
+            font-family:Papyrus;
+        }
+
+
+        body
+        {
+            background-image: url("background2.jpg");
+            background-color: #cccccc;
+        }
+        .buttoBack{
+            background-color: #A65959;
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+            cursor: pointer;
+        }
+        .hintButton{
+            background-color: #A65959;
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        .button{
+            margin-left:30px;
+            background-color: #A65959;
+            type : "button";
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        #time{
+        }
+        #usedWalls{
+            color:black;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:25px;
+            position: absolute;
+            left: 700px;
+            font-family:Papyrus;
+        }
+        #level{
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:25px;
+            font-family:Papyrus;
+        }
+        .putWall{
+            /*margin-left:30px;*/
+            background-color: #A65959;
+            type : "button";
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        p1
+        {
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:16px;
+            text-align: center;
+            font-family:Papyrus;
+
+        }
+
+        p2
+        {
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:45px;
+            text-align: center;
+            font-family:Papyrus;
+            position: relative;
+            bottom: 600px;
+            left: 60px;
+        }
+
+        #rotating-item-wrapper {
+            position: relative;
+            width: 980px;
+            height: 347px;
+        }
+        .rotating-item {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #block_container {
+            display: flex;
+        }
+        #map {
+            padding: 0px 75px;
+        }
+        #walls {
+            padding: 0px 200px;
+        }
+        #buttons {
+
+        }
+        .scrollable {
+            height: 500px;
+            /*height: 286px;*/
+            /*width: 400px;*/
+            width: 270px;
+            overflow-y: scroll;
+        }
+        .rotate90 {
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+        .demo-image{
+            /*padding:20px 100px;*/
+            width: 400px;
+            height: 397px;
+            transform: rotate(0deg);
+        }
+
+        table {
+            /*padding: 0px 150px;*/
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 2px solid #0800ff;
+            width: 100px;
+            /*width: 130px;*/
+            /*height: 80px;*/
+            height: 50px;
+            font-size:25px;
+
+        }
+
+
+    </style>
+    <script type>
+        var globalData;
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "HighscoresInfo",
+                data:{}
+            }).done(function( data ) {
+                globalData = data.split(", ");
+                var map = $(document);
+                map = map.children(":first").children(":first").next().children(":first").next().next().children(":first").next().children(":first");
+                var arcade = map.next().children(":first").children(":first").next();
+
+                for( var i = 0 ; i < 6 ; i++ ){
+                    arcade = arcade.children(":first");
+                    arcade.get(0).innerHTML = globalData[i*3];
+                    arcade = arcade.next();
+                    arcade.get(0).innerHTML = globalData[i*3+1];
+                    arcade = arcade.next();
+                    arcade.get(0).innerHTML = globalData[i*3+2];
+                    arcade = arcade.parent().next();
+                }
+
+                var timearcade = map.next().next().next().children(":first").children(":first").next();
+
+                for( var i = 0 ; i < 6 ; i++ ){
+                    timearcade = timearcade.children(":first");
+                    timearcade.get(0).innerHTML = globalData[i*3+18];
+                    timearcade = timearcade.next();
+                    timearcade.get(0).innerHTML = globalData[i*3+19];
+                    timearcade = timearcade.next();
+                    timearcade.get(0).innerHTML = globalData[i*3+20];
+                    timearcade = timearcade.parent().next();
+                }
+                var white = map.next().next().next().next().next().children(":first").children(":first").next();
+
+                for( var i = 0 ; i < 6 ; i++ ){
+                    white = white.children(":first");
+                    white.get(0).innerHTML = globalData[i*3+36];
+                    white = white.next();
+                    white.get(0).innerHTML = globalData[i*3+37];
+                    white = white.next();
+                    white.get(0).innerHTML = globalData[i*3+38];
+                    white = white.parent().next();
+                }
+                var whitetime = map.next().next().next().next().next().next().next().children(":first").children(":first").next();
+
+                for( var i = 0 ; i < 6 ; i++ ){
+                    whitetime = whitetime.children(":first");
+                    whitetime.get(0).innerHTML = globalData[i*3+54];
+                    whitetime = whitetime.next();
+                    whitetime.get(0).innerHTML = globalData[i*3+55];
+                    whitetime = whitetime.next();
+                    whitetime.get(0).innerHTML = globalData[i*3+56];
+                    whitetime = whitetime.parent().next();
+                }
+
+
+
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+
+<div id="buttons">
+    <button class = "button buttoBack" onclick="location.href = 'MAINMENU'" style="position:absolute; left: 50px;"> <p1>MAIN MENU</p1> </button>
+</div>
+<div>
+</div>
+
+<div id="block_container">
+    <div>
+        <h2>HIGH SCORES</h2>
+    </div>
+    <div id="map">
+        <h4 style="position: absolute; left: 190px; top: 200px; ">Arcade Mode</h4>
+        <table style="position: absolute; left: 120px; top: 300px;">
+
+            <tr>
+                <td>List</td>
+                <td>User</td>
+                <td>Score</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+            </tr>
+
+        </table>
+        <h4 style="position: absolute; left: 575px; top: 200px;">Time Challenge Mode</h4>
+        <table style="position: absolute; left: 580px; top: 300px;">
+
+            <tr>
+                <td>List</td>
+                <td>User</td>
+                <td>Score</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+            </tr>
+
+        </table>
+        <h4 style="position: absolute; left: 1000px; top: 200px;">Arcade White Knight Mode</h4>
+        <table style="position: absolute; left: 1040px; top: 300px;">
+
+            <tr>
+                <td>List</td>
+                <td>User</td>
+                <td>Score</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+            </tr>
+        </table>
+        <h4 style="position: absolute; left: 1450px; top: 200px;">Time White Knight Mode</h4>
+        <table style="position: absolute; left: 1470px; top: 300px;">
+
+            <tr>
+                <td>List</td>
+                <td>User</td>
+                <td>Score</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+                <td style=" background-color: orange"></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+</body>
+</html>
