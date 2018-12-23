@@ -1,29 +1,18 @@
 package hello.Models;
 public class Wall {
-    private int id;
-    private int direction;
+    private String direction;
     private String img;
 
-    public Wall( int id, int direction, String img ){
-        this.id = id;
+    public Wall( String direction ){
         this.direction = direction;
-        this.img = "some random img url for Wall : " + id;
+        this.img = "" + direction + ".png";
     }
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getDirection() {
+    public String getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 

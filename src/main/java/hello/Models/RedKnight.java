@@ -8,7 +8,7 @@ public class RedKnight {
     public RedKnight( int X , int Y ){
         this.X = X;
         this.Y = Y;
-        img = "some random url for now\n";
+        img = "redKnight.jpg";
     }
 
     public int getX() {

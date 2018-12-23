@@ -3,29 +3,25 @@ import java.util.*;
 
 public class Map {
 
-    private int type;
-    private List<BlueKnight> blue;
-    private List<RedKnight> red;
-    private WhiteKnight white;
-    private int difficulty;
     private List<Wall> walls;
 
-    public Map(int type, List<BlueKnight> blue, List<RedKnight> red, WhiteKnight white, int difficulty, List<Wall> walls) {
-        this.type = type;
+    private List<RedKnight> red;
+    private List<BlueKnight> blue;
+    private List<WhiteKnight> white;
+    private List<Hint> hint;
+
+    private int difficulty;
+
+
+    public Map( List<Wall> walls , List<RedKnight> red, List<BlueKnight> blue, List<WhiteKnight> white, List<Hint> hint, int difficulty) {
         this.blue = blue;
         this.red = red;
         this.white = white;
-        this.difficulty = difficulty;
         this.walls = walls;
+        this.hint = hint;
+        this.difficulty = difficulty;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public List<BlueKnight> getBlue() {
         return blue;
@@ -43,11 +39,11 @@ public class Map {
         this.red = red;
     }
 
-    public WhiteKnight getWhite() {
+    public List<WhiteKnight> getWhite() {
         return white;
     }
 
-    public void setWhite(WhiteKnight white) {
+    public void setWhite(List<WhiteKnight> white) {
         this.white = white;
     }
 
@@ -65,6 +61,14 @@ public class Map {
 
     public void setWalls(List<Wall> walls) {
         this.walls = walls;
+    }
+
+    public List<Hint> getHint() {
+        return hint;
+    }
+
+    public void setHint(List<Hint> hint) {
+        this.hint = hint;
     }
 }
 

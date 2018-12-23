@@ -9,7 +9,7 @@ public class BlueKnight {
     public BlueKnight( int X , int Y ){
         this.X = X;
         this.Y = Y;
-        img = "some random url for now\n";
+        img = "blueKnight.jpg";
     }
 
     public int getX() {

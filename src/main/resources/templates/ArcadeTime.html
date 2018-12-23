@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+
+<html xmlns:width="http://www.w3.org/1999/xhtml">
+
+<head>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <title> Game Page </title>
+    <style>
+
+        h2{
+            border-color:black;
+            text-align: left;
+            color:#000000;
+            padding: 0px 250px;
+            font-size:50px;
+            margin-left:230px;
+            margin-right:130px;
+            font-family:Papyrus;
+        }
+        h3{
+            border-color:black;
+            color:#E8714A;
+            font-size:30px;
+            font-family:Papyrus;
+        }
+        h4{
+            border-color:black;
+            color: #000000;
+            font-size:30px;
+            font-family:Papyrus;
+        }
+        body
+        {
+            background-image: url("background4.jpg");
+            background-color: #cccccc;
+        }
+        .buttoBack{
+            background-color: #A65959;
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+            cursor: pointer;
+        }
+        .hintButton{
+            background-color: #A65959;
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        .button{
+            margin-left:30px;
+            background-color: #A65959;
+            type : "button";
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        #usedWalls{
+            color:black;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:25px;
+            position: absolute;
+            left: 700px;
+            font-family:Papyrus;
+        }
+        #time{
+        }
+        #level{
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:25px;
+            font-family:Papyrus;
+        }
+        .putWall{
+            /*margin-left:30px;*/
+            background-color: #A65959;
+            type : "button";
+            /*color:blue;*/
+            border-color:black;
+            border-style:groove;
+
+            cursor: pointer;
+        }
+        p1
+        {
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:16px;
+            text-align: center;
+            font-family:Papyrus;
+
+        }
+
+        p2
+        {
+            color:white;
+            font-family:Verdana, Geneva, sans-serif;
+            font-size:45px;
+            text-align: center;
+            font-family:Papyrus;
+            position: relative;
+            bottom: 600px;
+            left: 60px;
+        }
+
+        #rotating-item-wrapper {
+            position: relative;
+            width: 980px;
+            height: 347px;
+        }
+        .rotating-item {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #block_container {
+            display: flex;
+        }
+        #map {
+            padding: 0px 75px;
+        }
+        #walls {
+            padding: 0px 200px;
+        }
+        #buttons {
+
+        }
+        .scrollable {
+            height: 500px;
+            /*height: 286px;*/
+            /*width: 400px;*/
+            width: 270px;
+            overflow-y: scroll;
+        }
+        .rotate90 {
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            -o-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+        .demo-image{
+            /*padding:20px 100px;*/
+            width: 400px;
+            height: 397px;
+            transform: rotate(0deg);
+        }
+
+        table {
+            /*padding: 0px 150px;*/
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 7px solid #0800ff;
+            width: 150px;
+            /*width: 130px;*/
+            /*height: 80px;*/
+            height: 90px;
+        }
+
+
+    </style>
+    <script type>
+        var globalHintLocation;
+        var globaltime = 30;
+        var globalHintUsed = 0;
+        var globalScore = 0;
+        var globalData;
+        var globalWallNumber = 0;
+        var globalLevel;
+        var puttedWallKeeper;
+
+        var x = setInterval(function() {
+            globaltime--;
+            document.getElementById('time').innerText = "Remaining time : " + Math.floor(globaltime / 3600) + "h " + Math.floor((globaltime % 3600) / 60 ) + "m " + Math.floor(globaltime % 60) + "s";
+            if ( globaltime  ==  0 ) {
+                var newtime = globalLevel * 15 + 10;
+                globaltime = 1;
+                var result = window.confirm(" time is up. Do you want to use 1 hint for " + newtime + " seconds.");
+                if( result == 1 ){
+                    if( globalHintUsed < parseInt(globalData[globalHintLocation+(globalData[globalHintLocation])*4+1]) ){
+                        globalHintUsed++;
+                        globaltime += newtime;
+                    }
+                    else{
+                        window.alert( "You dont have anymore hint !!!!" );
+                        window.location = "/PlayMenuPage";
+                    }
+                }
+                else{
+                    window.location = "/PlayMenuPage";
+                }
+            }
+        }, 1000);
+
+        $(function() {
+
+            $("#walls").on('click', '.demo-image', function() {
+
+                var transform = $( this ).get(0).transform;
+
+                if(!transform)
+                    transform = 0;
+
+                transform +=90;
+
+                $( this ).get(0).transform = transform;
+                $( this ).css("transform", "rotate("+transform+"deg)");
+
+            })
+        });
+
+        $(function () {
+            $("#buttons").on('click', '.hintButton', function () {
+                if( globalHintUsed < parseInt(globalData[globalHintLocation]) && globalHintUsed < parseInt(globalData[globalHintLocation+(globalData[globalHintLocation])*4+1]) ){
+                    window.alert("Put the " + globalData[globalHintLocation + (globalHintUsed*4) + 1] + "'th wall with the " + (globalData[globalHintLocation + (globalHintUsed*4) + 2]-1) + " times turn right to the location X = " + globalData[globalHintLocation + (globalHintUsed*4) + 3] + " Y = " + globalData[globalHintLocation + (globalHintUsed*4) + 4] );
+                    globalHintUsed++;
+                }
+                else{
+                    window.alert("You dont have anymore hint !!!!");
+                }
+            })
+        })
+
+        $(function() {
+
+            $("#walls").on('click', '.putWall', function() {
+
+                // console.log( $(this) );
+                var father = $( this ).parent();
+                // console.log( father );
+                var firstSibling = father.prev();
+                // console.log( firstSibling );
+                var secondSibling = father.children(":first").next();
+                // console.log( $(secondSibling).val() );
+                var thirdSibling = secondSibling.next().next().next();
+                // console.log( $(thirdSibling).val() );
+                var main = $(this).parent().parent().parent().parent();
+                // console.log( main );
+                var map = main.children(":first").next().next().children(":first").children(":first").children(":first").children(":first");
+                // console.log( map );
+                var siblingForValueFinding = firstSibling;
+                var value = 0;
+                while( siblingForValueFinding.get(0).previousElementSibling != null ){
+                    siblingForValueFinding = siblingForValueFinding.prev().prev();
+                    value = value+1;
+                }
+                var wallColor = globalData[value*3+3];
+                var hexadec = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(wallColor);
+                var rgbColor = "rgb(" + parseInt(hexadec[1], 16) + ", " + parseInt(hexadec[2], 16) + ", " + parseInt(hexadec[3], 16) + ")";
+                value = globalData[value*3+2];
+
+                var ValueCos = parseInt( value );
+                var rotationWall = 0;
+
+                if( !firstSibling.get(0).transform )
+                    firstSibling.get(0).transform = 0;
+
+                rotationWall = parseInt(firstSibling.get(0).transform / 90) % 4 ;
+
+                var startX = parseInt($(secondSibling).val());
+                var startY = parseInt($(thirdSibling).val());
+                value = ValueCos;
+
+                if( startX > 6 || startX < 1 || startY > 6 || startY < 1 ){
+                    window.alert("You entered wrong location. Please pick a location where x and y between 1 to 6 !!!!");
+                }
+                else {
+                    console.log("X ==>>> " + startX);
+                    console.log("Y ==>>> " + startY);
+                    console.log("Rotation =>>> " + rotationWall);
+
+                    var problem = 0;
+
+                    while (value > 0) {
+                        var move = parseInt(value % 10);
+                        var tempX = startX;
+                        var tempY = startY;
+                        var tempPoint = map;
+                        value /= 10;
+                        value = parseInt(value);
+                        move += rotationWall;
+                        move %= 4;
+                        if (move == 0)
+                            move = 4;
+                        if (move == 1) {
+                            startX -= 1;
+                            if (startX == 0) {
+                                startX += 1;
+                                problem = 1;
+                                break;
+                            }
+                            else if (startY == 1) {
+                                tempX -= 1;
+                                tempY -= 1;
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-left-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-left-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                            else {
+                                tempX -= 1;
+                                tempY -= 1;
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-right-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-right-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                        }
+                        else if (move == 2) {
+                            startY += 1;
+                            if (startY == 7) {
+                                startY -= 1;
+                                problem = 1;
+                                break;
+                            }
+                            else if (startX == 1) {
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-top-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-top-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                            else {
+                                tempX -= 1;
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-bottom-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-bottom-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                        }
+                        else if (move == 3) {
+                            startX += 1;
+                            if (startX == 7) {
+                                startX -= 1;
+                                problem = 1;
+                                break;
+                            }
+                            else if (startY == 1) {
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-left-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-left-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                            else {
+                                tempY -= 1;
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-right-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-right-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+
+
+                        }
+                        else if (move == 4) {
+                            startY -= 1;
+                            if (startY == 0) {
+                                startY += 1;
+                                problem = 1;
+                                break;
+                            }
+                            else if (startX == 1) {
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                tempY -= 1;
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-top-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-top-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                            else {
+                                tempX -= 1;
+                                while (tempX > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempX -= 1;
+                                }
+                                tempPoint = tempPoint.children(":first");
+                                tempY -= 1;
+                                while (tempY > 1) {
+                                    tempPoint = tempPoint.next();
+                                    tempY -= 1;
+                                }
+                                if (tempPoint.css('border-bottom-color') == 'rgb(8, 0, 255)' || tempPoint.css('border-bottom-color') == rgbColor) {
+                                }
+                                else {
+                                    problem = 1;
+                                }
+                            }
+                        }
+                    }
+
+                    if (problem == 1) {
+                        console.log("----");
+                    }
+
+                    else {
+                        globalWallNumber++;
+                        console.log("++++");
+                        value = ValueCos;
+                        if (firstSibling.get(0).put == 1) {
+                            globalWallNumber--;
+                            console.log("Putted");
+                            startX = firstSibling.get(0).putX;
+                            startY = firstSibling.get(0).putY;
+                            rotationWall = 0;
+                            if (firstSibling.get(0).oldRotation)
+                                rotationWall = parseInt(firstSibling.get(0).oldRotation / 90) % 4;
+                            console.log("Previous X ==>>> " + startX);
+                            console.log("Previous Y ==>>> " + startY);
+                            console.log("Previous Rotation ==>>> " + rotationWall);
+                            while (value > 0) {
+                                var move = parseInt(value % 10);
+                                var tempX = startX;
+                                var tempY = startY;
+                                var tempPoint = map;
+                                value /= 10;
+                                value = parseInt(value);
+                                move += rotationWall;
+                                move %= 4;
+                                if (move == 0)
+                                    move = 4;
+                                if (move == 1) {
+                                    startX -= 1;
+                                    if (startX == 0) {
+                                        startX += 1;
+                                    }
+                                    else if (startY == 1) {
+                                        tempX -= 1;
+                                        tempY -= 1;
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-left-color', '#0800ff');
+                                    }
+                                    else {
+                                        tempX -= 1;
+                                        tempY -= 1;
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-right-color', '#0800ff');
+                                    }
+                                }
+                                else if (move == 2) {
+                                    startY += 1;
+                                    if (startY == 7) {
+                                        startY -= 1;
+                                    }
+                                    else if (startX == 1) {
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-top-color', '#0800ff');
+                                    }
+                                    else {
+                                        tempX -= 1;
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-bottom-color', '#0800ff');
+                                    }
+                                }
+                                else if (move == 3) {
+                                    startX += 1;
+                                    if (startX == 7) {
+                                        startX -= 1;
+                                    }
+                                    else if (startY == 1) {
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-left-color', '#0800ff');
+                                    }
+                                    else {
+                                        tempY -= 1;
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-right-color', '#0800ff');
+                                    }
+
+
+                                }
+                                else if (move == 4) {
+                                    startY -= 1;
+                                    if (startY == 0) {
+                                        startY += 1;
+                                    }
+                                    else if (startX == 1) {
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        tempY -= 1;
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-top-color', '#0800ff');
+                                    }
+                                    else {
+                                        tempX -= 1;
+                                        while (tempX > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempX -= 1;
+                                        }
+                                        tempPoint = tempPoint.children(":first");
+                                        tempY -= 1;
+                                        while (tempY > 1) {
+                                            tempPoint = tempPoint.next();
+                                            tempY -= 1;
+                                        }
+                                        tempPoint.css('border-bottom-color', '#0800ff');
+                                    }
+                                }
+                            }
+                        }
+                        startX = parseInt($(secondSibling).val());
+                        startY = parseInt($(thirdSibling).val());
+                        puttedWallKeeper[firstSibling.get(0).order] = 1;
+                        $("#usedWalls").get(0).innerText = "You used the ";
+                        var cnt = 0;
+                        for (var i = 0; i < globalData[0]; i++) {
+                            cnt = i;
+                            if (puttedWallKeeper[i] == 1) {
+                                $("#usedWalls").get(0).innerText = $("#usedWalls").get(0).innerText + " " + (i + 1);
+                                break;
+                            }
+                        }
+                        cnt++;
+                        for (; cnt < globalData[0]; cnt++) {
+                            if (puttedWallKeeper[cnt] == 1) {
+                                $("#usedWalls").get(0).innerText = $("#usedWalls").get(0).innerText + ", " + (cnt + 1);
+                            }
+                        }
+                        $("#usedWalls").get(0).innerText = $("#usedWalls").get(0).innerText + "'th walls !!!";
+                        firstSibling.get(0).put = 1;
+                        firstSibling.get(0).putX = startX;
+                        firstSibling.get(0).putY = startY;
+                        firstSibling.get(0).oldRotation = firstSibling.get(0).transform;
+                        rotationWall = parseInt(firstSibling.get(0).transform / 90) % 4;
+                        value = ValueCos;
+                        console.log("New X ==>>> " + startX);
+                        console.log("New Y ==>>> " + startY);
+                        console.log("New Rotation ==>>> " + firstSibling.get(0).transform);
+                        console.log("Value === >>>> " + value);
+                        console.log("transform --- >>> " + rotationWall);
+                        while (value > 0) {
+                            var move = parseInt(value % 10);
+                            var tempX = startX;
+                            var tempY = startY;
+                            var tempPoint = map;
+                            value /= 10;
+                            value = parseInt(value);
+                            move += rotationWall;
+                            move %= 4;
+                            if (move == 0)
+                                move = 4;
+                            if (move == 1) {
+                                startX -= 1;
+                                if (startX == 0) {
+                                    startX += 1;
+                                }
+                                else if (startY == 1) {
+                                    tempX -= 1;
+                                    tempY -= 1;
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-left-color', wallColor);
+                                }
+                                else {
+                                    tempX -= 1;
+                                    tempY -= 1;
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-right-color', wallColor);
+                                }
+                            }
+                            else if (move == 2) {
+                                startY += 1;
+                                if (startY == 7) {
+                                    startY -= 1;
+                                }
+                                else if (startX == 1) {
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-top-color', wallColor);
+                                }
+                                else {
+                                    tempX -= 1;
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-bottom-color', wallColor);
+                                }
+                            }
+                            else if (move == 3) {
+                                startX += 1;
+                                if (startX == 7) {
+                                    startX -= 1;
+                                }
+                                else if (startY == 1) {
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-left-color', wallColor);
+                                }
+                                else {
+                                    tempY -= 1;
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-right-color', wallColor);
+                                }
+
+
+                            }
+                            else if (move == 4) {
+                                startY -= 1;
+                                if (startY == 0) {
+                                    startY += 1;
+                                }
+                                else if (startX == 1) {
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    tempY -= 1;
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-top-color', wallColor);
+                                }
+                                else {
+                                    tempX -= 1;
+                                    while (tempX > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempX -= 1;
+                                    }
+                                    tempPoint = tempPoint.children(":first");
+                                    tempY -= 1;
+                                    while (tempY > 1) {
+                                        tempPoint = tempPoint.next();
+                                        tempY -= 1;
+                                    }
+                                    tempPoint.css('border-bottom-color', wallColor);
+                                }
+                            }
+                        }
+
+                        if (globalWallNumber == globalData[0]) {
+                            var changedValue = 0;
+                            var controlMap = new Array(30);
+                            var roadsNode = new Array(30);
+                            for (var i = 0; i < 30; i++) {
+                                controlMap[i] = new Array(30);
+                                roadsNode[i] = new Array(30);
+                                for (var j = 0; j < 30; j++) {
+                                    controlMap[i][j] = 0;
+                                    roadsNode[i][j] = 0;
+                                }
+                            }
+
+                            var row1traveler = map;
+                            var row2traveler = row1traveler;
+                            row2traveler = row2traveler.next();
+                            var row3traveler = row2traveler;
+                            row3traveler = row3traveler.next();
+                            var row4traveler = row3traveler;
+                            row4traveler = row4traveler.next();
+                            var row5traveler = row4traveler;
+                            row5traveler = row5traveler.next();
+
+                            row1traveler = row1traveler.children(":first");
+                            row2traveler = row2traveler.children(":first");
+                            row3traveler = row3traveler.children(":first");
+                            row4traveler = row4traveler.children(":first");
+                            row5traveler = row5traveler.children(":first");
+
+                            for (var i = 0; i < 5; i++) {
+                                if (row1traveler.css("border-top-color") == 'rgb(8, 0, 255)' || i == 0 && row1traveler.css("border-left-color") == 'rgb(8, 0, 255)' || i == 4 && row1traveler.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                    changedValue++;
+                                    controlMap[0][i] = 1;
+                                }
+                                row1traveler = row1traveler.next();
+                            }
+
+                            if (row2traveler.css("border-left-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[1][0] = 1;
+                            }
+                            row2traveler = row2traveler.next().next().next().next();
+
+                            if (row2traveler.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[1][4] = 1;
+                            }
+
+                            if (row3traveler.css("border-left-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[2][0] = 1;
+                            }
+                            row3traveler = row3traveler.next().next().next().next();
+
+                            if (row3traveler.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[2][4] = 1;
+                            }
+
+                            if (row4traveler.css("border-left-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[3][0] = 1;
+                            }
+                            row4traveler = row4traveler.next().next().next().next();
+
+                            if (row4traveler.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                changedValue++;
+                                controlMap[3][4] = 1;
+                            }
+
+                            for (var i = 0; i < 5; i++) {
+                                if (row5traveler.css("border-bottom-color") == 'rgb(8, 0, 255)' || i == 0 && row5traveler.css("border-left-color") == 'rgb(8, 0, 255)' || i == 4 && row5traveler.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                    changedValue++;
+                                    controlMap[4][i] = 1;
+                                }
+                                row5traveler = row5traveler.next();
+                            }
+
+                            var rowtraveller = map;
+                            var columntraveller;
+
+                            for (var i = 0; i < 5; i++) {
+                                columntraveller = rowtraveller;
+                                columntraveller = columntraveller.children(":first");
+                                for (var j = 0; j < 5; j++) {
+                                    if (i != 4) {
+                                        if (columntraveller.css("border-bottom-color") == 'rgb(8, 0, 255)') {
+                                            roadsNode[i * 5 + j][(i + 1) * 5 + j] = roadsNode[(i + 1) * 5 + j][i * 5 + j] = 1;
+                                        }
+                                    }
+                                    if (j != 4) {
+                                        if (columntraveller.css("border-right-color") == 'rgb(8, 0, 255)') {
+                                            roadsNode[i * 5 + j][i * 5 + j + 1] = roadsNode[i * 5 + j + 1][i * 5 + j] = 1;
+                                        }
+                                    }
+                                    columntraveller = columntraveller.next();
+                                }
+                                rowtraveller = rowtraveller.next();
+                            }
+
+                            while (changedValue) {
+                                changedValue = 0;
+                                var affectorRow = map;
+                                for (var i = 0; i < 5; i++) {
+                                    for (var j = 0; j < 5; j++) {
+                                        if (controlMap[i][j]) {
+                                            if (i > 0 && roadsNode[i * 5 + j][(i - 1) * 5 + j] && !controlMap[i - 1][j]) {
+                                                controlMap[i - 1][j] = 1;
+                                                changedValue++;
+                                            }
+                                            if (j > 0 && roadsNode[i * 5 + j][i * 5 + j - 1] && !controlMap[i][j - 1]) {
+                                                controlMap[i][j - 1] = 1;
+                                                changedValue++;
+                                            }
+                                            if (j < 4 && roadsNode[i * 5 + j][i * 5 + j + 1] && !controlMap[i][j + 1]) {
+                                                controlMap[i][j + 1] = 1;
+                                                changedValue++;
+                                            }
+                                            if (i < 4 && roadsNode[i * 5 + j][(i + 1) * 5 + j] && !controlMap[i + 1][j]) {
+                                                controlMap[i + 1][j] = 1;
+                                                changedValue++
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            var result = 1;
+                            var numberOfRedKnights = parseInt(globalData[globalData[0] * 3 + 1]);
+                            var locationRedKnights = parseInt(globalData[0] * 3 + 1);
+                            var numberOfBlueKnights = parseInt(globalData[locationRedKnights + numberOfRedKnights + 1]);
+                            var locationBlueKnights = locationRedKnights + numberOfRedKnights + 1;
+                            var numberOfWhiteKnights = parseInt(globalData[locationBlueKnights + numberOfBlueKnights + 1]);
+                            var locationWhiteKnights = locationBlueKnights + numberOfBlueKnights + 1;
+                            var newKnightX, newKnightY;
+                            for (var i = 0; i < numberOfRedKnights; i++) {
+                                newKnightX = parseInt(globalData[locationRedKnights + i + 1]);
+                                newKnightY = newKnightX % 10;
+                                newKnightX = parseInt(newKnightX / 10);
+                                newKnightX--;
+                                newKnightY--;
+                                if (controlMap[newKnightX][newKnightY] == 0) {
+                                    result = 0;
+                                    break;
+                                }
+                            }
+                            var localScore = 0;
+                            for (var i = 0; i < numberOfBlueKnights; i++) {
+                                newKnightX = parseInt(globalData[locationBlueKnights + i + 1]);
+                                newKnightY = newKnightX % 10;
+                                newKnightX = parseInt(newKnightX / 10);
+                                newKnightX--;
+                                newKnightY--;
+                                if (controlMap[newKnightX][newKnightY] == 1) {
+                                    result = 0;
+                                    break;
+                                }
+                            }
+                            for (var i = 0; i < numberOfWhiteKnights; i++) {
+                                newKnightX = parseInt(globalData[locationWhiteKnights + i + 1]);
+                                newKnightY = newKnightX % 10;
+                                newKnightX = parseInt(newKnightX / 10);
+                                newKnightX--;
+                                newKnightY--;
+                                if (controlMap[newKnightX][newKnightY] == 0) {
+                                    localScore++;
+                                }
+                            }
+                            if (!result) {
+                                window.alert("Solution is not correct please try again !!!");
+                            }
+                            else {
+                                globaltime += 20;
+                                globalScore += localScore;
+                                for (var i = 0; i < globalData[0]; i++) {
+                                    puttedWallKeeper[i] = 0;
+                                }
+                                $.ajax({
+                                    url: "arcadeTimeNewLevel",
+                                    data: {"level": globalLevel + 1, "hintUsed": globalHintUsed, "score": localScore}
+                                }).done(function (data) {
+                                    globalHintUsed = 0;
+                                    globalData = data.split(", ");
+                                    console.log(globalData);
+                                    globalWallNumber = 0;
+                                    var wallLocation = document.firstChild.nextSibling.firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.nextSibling;
+                                    wallLocation.innerHTML = "";
+                                    for (var i = 0; i < globalData[0]; i++) {
+                                        var local = parseInt( globalData[3*i+2] );
+                                        globalData[3*i+2] = 0;
+                                        while( local ){
+                                            globalData[3*i+2] *= 10;
+                                            globalData[3*i+2] += local % 10;
+                                            local = parseInt( local / 10 );
+                                        }
+                                        var fieldOpen = '<div>';
+                                        var fieldClose = '</div>';
+                                        var newWall = $('<img src="' + globalData[3 * i + 1] + '" class="demo-image" />');
+                                        console.log(newWall);
+                                        newWall.mapValue = globalData[3 * i + 2];
+                                        var newHtml = $('<div>X coordinate:<br>' +
+                                            '<input type="number" name="Xcoordinate"><br>Y coordinate:<br><input type="number" name="Ycoordinate"><br>' +
+                                            '<button type="submit" class="putWall">Put the ' + (i + 1) + '\'th wall</button></div>');
+                                        $("#walls").append(newWall);
+                                        var order = $("#walls").get(0).lastChild.order;
+                                        if (!order)
+                                            order = i;
+                                        $("#walls").get(0).lastChild.order = order;
+                                        $("#walls").append(newHtml);
+                                    }
+                                    $("#usedWalls").get(0).innerText = "You didnt use any wall yet !!!";
+                                    var map = document.firstChild.nextSibling.firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.firstChild.nextSibling;
+                                    map = map.firstChild.nextSibling.firstChild.nextSibling;
+                                    map.innerHTML = "<table><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr></table>";
+                                    map = map.firstChild;
+                                    console.log(map);
+                                    var numberOfRedKnights = parseInt(globalData[globalData[0] * 3 + 1]);
+                                    var locationRedKnights = parseInt(globalData[0] * 3 + 1);
+                                    var numberOfBlueKnights = parseInt(globalData[locationRedKnights + numberOfRedKnights + 1]);
+                                    var locationBlueKnights = locationRedKnights + numberOfRedKnights + 1;
+                                    var numberOfWhiteKnights = parseInt(globalData[locationBlueKnights + numberOfBlueKnights + 1]);
+                                    var locationWhiteKnights = locationBlueKnights + numberOfBlueKnights + 1;
+                                    var newKnightX, newKnightY, tempPoint;
+                                    for (var i = 0; i < numberOfRedKnights; i++) {
+                                        newKnightX = parseInt(globalData[locationRedKnights + i + 1]);
+                                        newKnightY = newKnightX % 10;
+                                        newKnightX /= 10;
+                                        tempPoint = map;
+                                        while (newKnightX > 2) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightX -= 1;
+                                        }
+                                        tempPoint = tempPoint.firstChild;
+                                        while (newKnightY > 1) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightY -= 1;
+                                        }
+                                        tempPoint.innerHTML = '<img src="redKnight.jpg" align="center" width="100%" height="100%" />';
+                                    }
+                                    for (var i = 0; i < numberOfBlueKnights; i++) {
+                                        newKnightX = parseInt(globalData[locationBlueKnights + i + 1]);
+                                        newKnightY = newKnightX % 10;
+                                        newKnightX /= 10;
+                                        tempPoint = map;
+                                        while (newKnightX > 2) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightX -= 1;
+                                        }
+                                        tempPoint = tempPoint.firstChild;
+                                        while (newKnightY > 1) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightY -= 1;
+                                        }
+                                        tempPoint.innerHTML = '<img src="blueKnight.jpg" align="center" width="100%" height="100%" />';
+                                    }
+                                    for (var i = 0; i < numberOfWhiteKnights; i++) {
+                                        newKnightX = parseInt(globalData[locationWhiteKnights + i + 1]);
+                                        newKnightY = newKnightX % 10;
+                                        newKnightX /= 10;
+                                        tempPoint = map;
+                                        while (newKnightX > 2) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightX -= 1;
+                                        }
+                                        tempPoint = tempPoint.firstChild;
+                                        while (newKnightY > 1) {
+                                            tempPoint = tempPoint.nextElementSibling;
+                                            newKnightY -= 1;
+                                        }
+                                        tempPoint.innerHTML = '<img src="whiteKnight2.jpg" align="center" width="100%" height="100%" />';
+                                    }
+                                    globalLevel = parseInt(globalData[locationWhiteKnights + numberOfWhiteKnights + 1]);
+                                    $("#level").get(0).innerText = "Level " + globalLevel;
+                                    globalHintLocation = parseInt(locationWhiteKnights + numberOfWhiteKnights + 2);
+                                });
+                            }
+                        }
+                    }
+                }
+            })
+        });
+
+        $(document).ready(function() {
+            $.ajax({
+                url: "arcadeTimeFirstCall",
+                data:{}
+            }).done(function( data ) {
+
+                globalData = data.split(", ");
+                puttedWallKeeper = new Array( globalData[0] );
+                for( var i = 0 ; i < globalData[0] ; i++ ){
+                    puttedWallKeeper[i] = 0;
+                }
+                console.log( "Sample of data:", globalData.type + "  " + globalData );
+                for ( var i = 0; i < globalData[0] ; i++ ) {
+                    var local = parseInt( globalData[3*i+2] );
+                    globalData[3*i+2] = 0;
+                    while( local ){
+                        globalData[3*i+2] *= 10;
+                        globalData[3*i+2] += local % 10;
+                        local = parseInt( local / 10 );
+                    }
+                    var fieldOpen = '<div>';
+                    var fieldClose = '</div>';
+                    var newWall = $('<img src="' + globalData[3*i+1] + '" class="demo-image" />');
+                    console.log( newWall );
+                    newWall.mapValue = globalData[3*i+2];
+                    console.log( newWall );
+                    var newHtml = $('<div>X coordinate:<br>' +
+                        '<input type="number" name="Xcoordinate"><br>Y coordinate:<br><input type="number" name="Ycoordinate"><br>' +
+                        '<button type="submit" class="putWall">Put the ' + (i+1) + '\'th wall</button></div>');
+                    $("#walls").append( newWall );
+                    var order = $("#walls").get(0).lastChild.order;
+                    if( !order )
+                        order = i;
+                    $("#walls").get(0).lastChild.order = order;
+                    $("#walls").append( newHtml );
+                }
+                var map = document.firstChild.nextSibling.firstChild.nextSibling.nextSibling.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.firstChild.nextSibling;
+                map = map.firstChild.nextSibling.firstChild.nextSibling.firstChild;
+                var numberOfRedKnights = parseInt(globalData[ globalData[0] * 3 + 1 ]);
+                var locationRedKnights = parseInt(globalData[0] * 3 + 1);
+                var numberOfBlueKnights = parseInt(globalData[ locationRedKnights + numberOfRedKnights + 1 ]);
+                var locationBlueKnights = locationRedKnights + numberOfRedKnights + 1;
+                var numberOfWhiteKnights = parseInt(globalData[ locationBlueKnights + numberOfBlueKnights + 1 ]);
+                var locationWhiteKnights = locationBlueKnights + numberOfBlueKnights + 1;
+                var newKnightX, newKnightY, tempPoint;
+                console.log( map );
+                for( var i = 0 ; i < numberOfRedKnights ; i++ ){
+                    newKnightX = parseInt( globalData[ locationRedKnights + i + 1 ] );
+                    newKnightY = newKnightX % 10;
+                    newKnightX /= 10 ;
+                    tempPoint = map;
+                    while( newKnightX > 2 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightX -= 1;
+                    }
+                    tempPoint = tempPoint.firstChild.nextSibling;
+                    while( newKnightY > 1 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightY -= 1;
+                    }
+                    tempPoint.innerHTML = '<img src="redKnight.jpg" align="center" width="100%" height="100%" />';
+                }
+                for( var i = 0 ; i < numberOfBlueKnights ; i++ ){
+                    newKnightX = parseInt( globalData[ locationBlueKnights + i + 1 ] );
+                    newKnightY = newKnightX % 10;
+                    newKnightX /= 10;
+                    tempPoint = map;
+                    while( newKnightX > 2 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightX -= 1;
+                    }
+                    tempPoint = tempPoint.firstChild.nextSibling;
+                    while( newKnightY > 1 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightY -= 1;
+                    }
+                    tempPoint.innerHTML = '<img src="blueKnight.jpg" align="center" width="100%" height="100%" />';
+                }
+                for( var i = 0 ; i < numberOfWhiteKnights ; i++ ){
+                    newKnightX = parseInt( globalData[ locationWhiteKnights + i + 1 ] );
+                    console.log( "+++ >>> " + newKnightX );
+                    newKnightY = newKnightX % 10;
+                    newKnightX /= 10;
+                    tempPoint = map;
+                    while( newKnightX > 2 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightX -= 1;
+                    }
+                    tempPoint = tempPoint.firstChild.nextSibling;
+                    while( newKnightY > 1 ){
+                        tempPoint = tempPoint.nextElementSibling;
+                        newKnightY -= 1;
+                    }
+                    tempPoint.innerHTML = '<img src="whiteKnight2.jpg" align="center" width="100%" height="100%" />';
+                }
+                globalLevel = parseInt( globalData[ locationWhiteKnights + numberOfWhiteKnights + 1 ] );
+                $("#level").get(0).innerText = "Level " + globalLevel;
+                globalHintLocation = parseInt( locationWhiteKnights + numberOfWhiteKnights + 2 );
+            });
+        });
+
+    </script>
+
+</head>
+<body>
+<div id="buttons">
+    <button class = "button buttoBack" onclick="location.href = 'PlayMenuPage'" style="position:absolute; left: 50px;"> <p1>MAIN MENU</p1> </button>
+    <button class = "hintButton" style="position: absolute; right: 300px;"> <p1>HINT</p1> </button>
+</div>
+<div>
+    <div >
+        <h2>Time Challenge Mode</h2>
+    </div>
+    <div style="width: 80%; text-align: right; " >
+        <h3 id="time">Remaining time : </h3>
+    </div>
+    <h4 style="position:absolute; bottom: 620px; padding: 0px 70px;">1 ------------ 2 ------------ 3 ------------ 4 ------------ 5 ------------ 6</h4>
+    <h4 style="position:absolute; bottom: 590px; padding: 0px 55px;">1</h4>
+    <h4 style="position:absolute; bottom: 500px; padding: 0px 55px;">2</h4>
+    <h4 style="position:absolute; bottom: 400px; padding: 0px 55px;">3</h4>
+    <h4 style="position:absolute; bottom: 300px; padding: 0px 55px;">4</h4>
+    <h4 style="position:absolute; bottom: 200px; padding: 0px 55px;">5</h4>
+    <h4 style="position:absolute; bottom: 105px; padding: 0px 55px;">6</h4>
+</div>
+
+<div id="block_container">
+    <div id="map">
+
+        <table>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+
+
+    </div>
+    <div id="walls" class="scrollable">
+    </div>
+</div>
+<p id="usedWalls">You didnt use any wall yet !!!</p>
+<p2 id = "level"></p2>
+</body>
+</html>

@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class test {
 
-    public static void main(String[] args ) throws SQLException {
+    public static void main(String[] args ) throws Exception {
 
         SqlRunner database = new SqlRunner();
 
-        database.testSql();
+
 
 //	Server server = new Server( database );
 
